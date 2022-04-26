@@ -65,8 +65,8 @@ const onDelete = async () => {
       #{{ tweet.topic }}
     </router-link>
     <button
+      v-if="isMyTweet"
       @click="onDelete"
-      :class="isMyTweet ? '' : 'cursor-not-allowed hidden'"
       class="
         flex
         px-2
