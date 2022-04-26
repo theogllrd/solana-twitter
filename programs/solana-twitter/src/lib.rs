@@ -24,6 +24,10 @@ pub mod solana_twitter {
         tweet.content = content;
         Ok(())
     }
+
+    pub fn delete_tweet(_ctx: Context<DeleteTweet>) -> ProgramResult {
+        Ok(())
+    }
 }
 
 // Define the context
@@ -36,6 +40,14 @@ pub struct SendTweet<'info> {
     #[account(mut)]
     pub author: Signer<'info>, // same as the AccountInfo type except we're also saying this account should sign the instruction
     pub system_program: Program<'info, System>, // the official system_program
+}
+
+// Define the context of DeleteTweet function
+#[derive(Accounts)]
+pub struct DeleteTweet<'info> {
+    #[account(mut, has_one = author, close = author)]
+    pub tweet: Account<'info, Tweet>,
+    pub author: Signer<'info>,
 }
 
 // 1. Define the structure of the Tweet account.
