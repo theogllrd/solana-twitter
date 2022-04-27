@@ -10,14 +10,19 @@ export const sendTweet = async (topic, content) => {
     const tweet = web3.Keypair.generate()
 
     // 3. Send a "SendTweet" instruction with the right data and the right accounts.
-    await program.value.rpc.sendTweet(topic, content, {
-        accounts: {
-            author: wallet.value.publicKey,
-            tweet: tweet.publicKey,
-            systemProgram: web3.SystemProgram.programId,
-        },
-        signers: [tweet]
-    })
+    try {
+        await program.value.rpc.sendTweet(topic, content, {
+            accounts: {
+                author: wallet.value.publicKey,
+                tweet: tweet.publicKey,
+                systemProgram: web3.SystemProgram.programId,
+            },
+            signers: [tweet]
+        });
+
+    } catch (error) {
+        alert(error);
+    }
 
     // 4. Fetch the newly created account from the blockchain.
     const tweetAccount = await program.value.account.tweet.fetch(tweet.publicKey)
